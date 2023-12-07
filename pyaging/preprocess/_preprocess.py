@@ -13,7 +13,7 @@ def bigwig_to_df(
     bw_files: Union[str, List[str]], dir: str = "pyaging_data", verbose: bool = True
 ) -> pd.DataFrame:
     """
-    Convert bigWig files to a DataFrame, extracting signal data for genomic regions.
+    Converts bigWig files to a DataFrame, extracting signal data for genomic regions.
 
     This function processes a list of bigWig files, extracting signal data (such as chromatin accessibility
     or histone modification levels) for each gene based on genomic annotations from Ensembl. It computes the
