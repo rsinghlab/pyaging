@@ -1,0 +1,62 @@
+---
+alwaysApply: true
+---
+
+### **AI Coding Assistant: Core Directives & Standards**
+
+#### **0. Execution Context**
+*   **Environment:** Assume all commands (testing, execution) run within a `.venv` virtual environment in the project root. Do not act outside this context unless specified.
+
+#### **1. Principle: Context is King**
+*   **Analyze First:** Before generating code, analyze surrounding files, tests, and project configs to understand context.
+*   **Emulate Style:** Strictly match existing coding patterns, naming conventions, and architectural choices.
+
+#### **2. Principle: Self-Verification via Temporary Tests**
+*   **Create & Run Tests:** For any non-trivial code addition or modification, you must first write temporary, targeted `pytest` tests that validate the change.
+*   **Validate:** Execute these tests against the proposed change within the `.venv` environment.
+*   **Clean Up:** If the tests pass, **remove them entirely**. The final submitted diff must not include these temporary validation tests, leaving the codebase clean.
+
+#### **3. Principle: Simplicity and Explicitness**
+*   **Minimal Viable Change:** Implement the smallest possible, fully functional change. No premature optimization.
+*   **Fail Fast:** Do not write defensive fallbacks. Raise specific exceptions (`ValueError`, `TypeError`) for invalid states.
+
+#### **4. Standard: Code Style & Structure (PEP Compliance)**
+Adherence to this style is mandatory.
+
+*   **PEP 8 (Style Guide):**
+    *   **Formatting:** All code must conform to `black` formatting, configured for a **79-character line length**.
+    *   **Naming:** `snake_case` for functions/variables, `PascalCase` for classes.
+*   **Import Organization (`isort` Style):** At the top of each file, group imports into three blocks (Standard Library, Third-Party, First-Party), separated by blank lines and sorted alphabetically within each block.
+*   **Custom Section Headers:** Use decorative, 79-character-wide comment blocks to visually separate logical code sections. Place a single blank line before each header.
+    *   **For Classes:** Center the class name.
+        ```python
+        # ===============================================================================
+        #                                MyClassName
+        # ===============================================================================
+        class MyClassName:
+            ...
+        ```
+    *   **For Function Groups:** Center the group's description.
+        ```python
+        # ===============================================================================
+        #                               Helper Functions
+        # ===============================================================================
+        def _private_helper():
+            ...
+        ```
+*   **Logical File Structure:** Define all functions, classes, and variables before they are used. Order the file logically from top to bottom (e.g., helpers before the main functions that call them).
+
+#### **5. Standard: Pythonic Quality**
+*   **PEP 484 (Type Hints):** Provide full, specific type hints for all signatures. Avoid `typing.Any`.
+*   **PEP 257 (Docstrings):** Use Google-style docstrings for all public APIs.
+*   **Suggest Permanent Tests:** When appropriate, *suggest* permanent `pytest` cases for the main test suite, separate from the temporary validation tests you run and delete.
+
+#### **6. Action: Refactoring & Communication**
+*   **Refactor with Purpose:** Only refactor when asked or when essential for a bug fix/feature.
+*   **Summarize Changes:** After each action, provide a 1-2 sentence summary of *what* was changed and *why*.
+*   **Watermark Transient Comments:** For comments describing a *change you made* (e.g., "refactored to use a dict"), add a watermark. Do **not** watermark permanent, explanatory comments or docstrings.
+    *   **Example:** `# Switched to a generator for memory efficiency -- [Coding Agent]`
+
+#### **7. Protocol: Error Recovery**
+*   **Analyze & Retry:** If an edit or test fails, analyze the error, revise the approach, and retry **twice**.
+*   **Report & Explain:** If still blocked, halt. Report the final error, explain the attempted solutions, and state your limitations.
